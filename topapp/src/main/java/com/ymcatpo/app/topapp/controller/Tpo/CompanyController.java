@@ -1,6 +1,8 @@
 package com.ymcatpo.app.topapp.controller.Tpo;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,13 +59,13 @@ public class CompanyController {
 	}
 	// list the student applied for a particular company
 	@GetMapping("/getStudent/{companyId}")
-	public ResponseEntity<List<StudentPersonalDetails>> getstudent(@PathVariable long companyId)throws Exception{
+	public ResponseEntity<Set<StudentPersonalDetails>> getstudent(@PathVariable long companyId)throws Exception{
 		
 		return new ResponseEntity<>(companyService.getPersonalDetails(companyId),HttpStatus.OK);
 	}
 	// list of the companies in which the student applied
 	@GetMapping("/getCompany/{studentId}")
-	public ResponseEntity<List<Company>> getstudent(@PathVariable String StudentId) throws Exception{
+	public ResponseEntity<Set<Company>> getstudent(@PathVariable String StudentId) throws Exception{
 		
 		return new ResponseEntity<>(companyService.getCompanyList(StudentId),HttpStatus.OK);
 	}

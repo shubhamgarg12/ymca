@@ -3,9 +3,10 @@ package com.ymcatpo.app.topapp.entity.Student;
 
 
 
-import java.util.List;
 
-import javax.persistence.EmbeddedId;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,9 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
 
 @Entity
-@Table(name = "StudenPeronal")
+@Table(name = "StudentPeronal")
 public class StudentPersonalDetails {
-	@EmbeddedId
+	@Id
 	private String rollNo;
 	private String fullName;
 	private String fatherName;
@@ -34,20 +35,22 @@ public class StudentPersonalDetails {
 	private String city;
 	
 	@JsonIgnore
-	@ManyToMany
-	
+	@ManyToMany( cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+        })
 	@JoinTable(
 			name= "company_student",
 			joinColumns = @JoinColumn(name = "rollNo"),
 			inverseJoinColumns =  @JoinColumn(name = "comapany_id")
 			)
-	private List<Company> company_id;
+	private Set<Company> company_id;
 	
 	 
-	public List<Company> getCompany_id() {
+	public Set<Company> getCompany_id() {
 		return company_id;
 	}
-	public void setCompany_id(List<Company> company_id) {
+	public void setCompany_id(Set<Company> company_id) {
 		this.company_id = company_id;
 	}
 	public String getRollNo() {

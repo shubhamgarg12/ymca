@@ -1,15 +1,12 @@
 package com.ymcatpo.app.topapp.entity.Tpo;
 
-import java.util.Date;
-import java.util.List;
-
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 
@@ -32,8 +29,12 @@ public class Company {
 	private String lastDateApply;
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "company_id")
-	private List<StudentPersonalDetails> student;
+	@ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+        },
+			mappedBy = "company_id")
+	private Set<StudentPersonalDetails> student;
 	
 	public Company() {
 		
@@ -43,7 +44,7 @@ public class Company {
 	
 	public Company(long comapnyId, String companyName, String jobProfile, String jobPackage, String jobDescription,
 			int noOfVacancies, String eligibilityCriteria, boolean backlog_Allow, int noOfBacklog, int batchYear,
-			String lastDateApply, List<StudentPersonalDetails> student) {
+			String lastDateApply) {
 		
 		this.comapnyId = comapnyId;
 		this.companyName = companyName;
@@ -56,7 +57,7 @@ public class Company {
 		this.noOfBacklog = noOfBacklog;
 		this.batchYear = batchYear;
 		this.lastDateApply = lastDateApply;
-		this.student = student;
+		
 	}
 
 
@@ -79,10 +80,10 @@ public class Company {
 	public void setComapnyId(long comapnyId) {
 		this.comapnyId = comapnyId;
 	}
-	public List<StudentPersonalDetails> getStudent() {
+	public Set<StudentPersonalDetails> getStudent() {
 		return student;
 	}
-	public void setStudent(List<StudentPersonalDetails> student) {
+	public void setStudent(Set<StudentPersonalDetails> student) {
 		this.student = student;
 	}
 	

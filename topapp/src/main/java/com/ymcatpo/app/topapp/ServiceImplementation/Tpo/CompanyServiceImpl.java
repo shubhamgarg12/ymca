@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,12 +53,14 @@ public class CompanyServiceImpl implements CompanyService  {
 		if(! stu.isPresent()) {
 			throw new ApiException("RollNo does not exist", HttpStatus.NO_CONTENT);
 		}
-		List<StudentPersonalDetails> temp = comp.get().getStudent();
+		Set<StudentPersonalDetails> temp = comp.get().getStudent();
 		temp.add(stu.get());
 		comp.get().setStudent(temp);
-		List<Company> temp2 = stu.get().getCompany_id();
+		Set<Company> temp2 = stu.get().getCompany_id();
 		temp2.add(comp.get());
 		stu.get().setCompany_id(temp2);
+		companyDao.save(comp.get());
+		studentDao.save(stu.get());
 		// fire an Confirmation email 
 	}
 
@@ -80,10 +83,10 @@ public class CompanyServiceImpl implements CompanyService  {
 	}
 
 	@Override
-	public List<StudentPersonalDetails> getPersonalDetails(long companyId) {
+	public Set<StudentPersonalDetails> getPersonalDetails(long companyId) {
 		 Company  cmp= companyDao.findById(companyId).orElseThrow( () -> new ApiException("No company exist for given Id",
 																					HttpStatus.NO_CONTENT) );
-		List<StudentPersonalDetails> list= cmp.getStudent();
+		 Set<StudentPersonalDetails> list= cmp.getStudent();
 		if(list.isEmpty()) {
 			new ApiException("No Student have registered yet",
 					HttpStatus.NO_CONTENT);
@@ -93,11 +96,11 @@ public class CompanyServiceImpl implements CompanyService  {
 	}
 
 	@Override
-	public List<Company> getCompanyList(String studentId) {
+	public Set<Company> getCompanyList(String studentId) {
 		
 	StudentPersonalDetails stu=	studentDao.findById(studentId).orElseThrow( () -> new ApiException("Student RollNo doesnt exist",
 				HttpStatus.NO_CONTENT) );
-		List<Company> list = stu.getCompany_id();
+	Set<Company> list = stu.getCompany_id();
 		if(list.isEmpty()) {
 			new ApiException("student havent apply in any company yet",
 					HttpStatus.NO_CONTENT);
@@ -107,7 +110,7 @@ public class CompanyServiceImpl implements CompanyService  {
 
 	@Override
 	public InputStream load(long companyId) {
-		List<StudentPersonalDetails> list= getPersonalDetails(companyId);
+		Set<StudentPersonalDetails> list= getPersonalDetails(companyId);
 		List<ExcelPojo> tutorials = new ArrayList<ExcelPojo>();
 		for(StudentPersonalDetails student :list) {
 			ExcelPojo excel = new ExcelPojo();
