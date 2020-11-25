@@ -1,4 +1,4 @@
-package com.ymcatpo.app.topapp.controller.Student;
+ package com.ymcatpo.app.topapp.controller.Student;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.ymcatpo.app.topapp.MailService.MailerService;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.serviceInterface.Strudent.StudentPeronalDetailsServices;
 
 @RestController
 @RequestMapping("/ymca/api/student")
 public class StudentPersonalConroller {
-
+	
+	@Autowired
+	private MailerService  notificationService;
 	@Autowired
 	private StudentPeronalDetailsServices student;
 	
@@ -27,17 +30,16 @@ public class StudentPersonalConroller {
 		return new ResponseEntity<List<StudentPersonalDetails>>(this.student.getStudentDetails(), HttpStatus.OK);
 	}
 		
-		
-
 	@GetMapping("/studentdetails/{rollNo}")
 	public ResponseEntity<StudentPersonalDetails> getStudent(@PathVariable String rollNo) throws Exception{
 			return new ResponseEntity<StudentPersonalDetails>(student.getStudent(rollNo),HttpStatus.OK);	
-				
-	}
+		}
 	
 	@PostMapping("/studentdetails")
 	public ResponseEntity<StudentPersonalDetails> saveStudent(@RequestBody StudentPersonalDetails student) throws Exception {
-		return new ResponseEntity<StudentPersonalDetails>(this.student.saveStudent(student),HttpStatus.CREATED);
+		StudentPersonalDetails stu =this.student.saveStudent(student);
+		notificationService.sendNotificaitoin(stu.getEmail(), "Data Updated", stu.getFullName()+", your data is updated");
+		return new ResponseEntity<StudentPersonalDetails>(stu,HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/studentdetails/{rollNo}")

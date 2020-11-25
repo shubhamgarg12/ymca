@@ -109,7 +109,8 @@ public class CompanyServiceImpl implements CompanyService  {
 	}
 
 	@Override
-	public InputStream load(long companyId) {
+	public List<ExcelPojo> load(long companyId) {
+		
 		Set<StudentPersonalDetails> list= getPersonalDetails(companyId);
 		List<ExcelPojo> tutorials = new ArrayList<ExcelPojo>();
 		for(StudentPersonalDetails student :list) {
@@ -176,8 +177,7 @@ public class CompanyServiceImpl implements CompanyService  {
 			tutorials.add(excel);
 		}
 		
-		ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(tutorials);
-	    return in;
+	    return tutorials;
 		
 	}
 	

@@ -5,6 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -49,17 +53,28 @@ public class ExcelHelper {
 	
 	public static ByteArrayInputStream tutorialsToExcel(List<ExcelPojo> student ) {
 
-	    try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
-	      Sheet sheet = workbook.createSheet();
-
-	      // Header
+	    try (Workbook workbook = new XSSFWorkbook(); 
+	    		ByteArrayOutputStream out = new ByteArrayOutputStream();) 
+	    {
+	    	CreationHelper createHelper = workbook.getCreationHelper();
+	    	Sheet sheet = workbook.createSheet();
+	    	Font headerFont = workbook.createFont();
+	        headerFont.setBold(true);
+	        headerFont.setColor(IndexedColors.BLUE.getIndex());
+	        CellStyle headerCellStyle = workbook.createCellStyle();
+	        headerCellStyle.setFont(headerFont);
+	      // Row for Header
 	      Row headerRow = sheet.createRow(0);
-
+	      // Header
 	      for (int col = 0; col < HEADERs.length; col++) {
 	        Cell cell = headerRow.createCell(col);
 	        cell.setCellValue(HEADERs[col]);
+	        cell.setCellStyle(headerCellStyle);
 	      }
-
+	   // CellStyle for Age
+	      CellStyle ageCellStyle = workbook.createCellStyle();
+	      ageCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("#"));
+	      
 	      int rowIdx = 1;
 	      for (ExcelPojo tutorial : student) {
 	        Row row = sheet.createRow(rowIdx++);

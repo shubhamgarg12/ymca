@@ -1,5 +1,7 @@
 package com.ymcatpo.app.topapp.controller.Tpo;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+
+import com.ymcatpo.app.topapp.Excel.ExcelHelper;
+import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
@@ -71,13 +76,19 @@ public class CompanyController {
 	}
 
 	@GetMapping("/download/{companyId}")
-	  public ResponseEntity<?> getFile(@PathVariable  long companyId) throws Exception {
-	    String filename = "tutorials.xlsx";
-	    InputStreamResource file = new InputStreamResource(companyService.load(companyId));
-
-	    return ResponseEntity.ok()
-	        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
-	        .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-	        .body(file);
-	  }
+	 public ResponseEntity<InputStreamResource> excelCustomersReport(@PathVariable  long companyId) throws IOException {
+        List<ExcelPojo> customers =  companyService.load(companyId);
+        		
+    
+    ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(customers);
+    // return IOUtils.toByteArray(in);
+    
+    HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename="+companyId+".xlsx");
+    
+     return ResponseEntity
+                  .ok()
+                  .headers(headers)
+                  .body(new InputStreamResource(in));
+    }
 }
