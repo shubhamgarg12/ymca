@@ -29,14 +29,16 @@ public class MailerService {
 	
 	@Async
 	public void sendNotificaitoin(String[] email,String sub, String body)throws MailException, InterruptedException {
-	      System.out.println("Sending email...");
-	      SimpleMailMessage mail = new SimpleMailMessage();
-			mail.setTo(email);
+	      	for(String temp : email) {
+			System.out.println("Sending email...");
+	      	SimpleMailMessage mail = new SimpleMailMessage();
+			mail.setTo(temp);
 			mail.setFrom("payxyztpo@gmail.com");
 			mail.setSubject(sub);
 			mail.setText(body);
 			javaMailSender.send(mail);
 			System.out.println("Email Sent!");
 		}
+	}
 	
 }

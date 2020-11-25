@@ -9,5 +9,7 @@ import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
 public interface CertificationService {
 
 	List<StudentCertification> getCertifiactionDetails(String Stuid);
-	List<StudentCertification> updateCertiDetail(StudentCertification certi,String Stuid );	
+	void createCertiDetail(StudentCertification certi,String Stuid );
+	void updateCertiDetail(StudentCertification certi,String Stuid);
+	void deleteDetails (String certiId);
 }

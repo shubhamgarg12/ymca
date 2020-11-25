@@ -33,15 +33,36 @@ public class CertificateServiceImpl implements CertificationService {
 	}
 
 	@Override
-	public List<StudentCertification> updateCertiDetail(StudentCertification certi, String Stuid) {
+	public void createCertiDetail(StudentCertification certi, String Stuid) {
+		try{
 		StudentPersonalDetails stu = stuDao.findById(Stuid).orElseThrow( () -> new ApiException("Student doent exist", HttpStatus.NO_CONTENT));
 		certi.setStu(stu);
 		certiDao.save(certi);	
-		List<StudentCertification> certifi =certiDao.findByStu(stu);
-		if(certifi.size()==0) {
-			throw new ApiException("No certification",HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			throw new ApiException("Error while creating certification",HttpStatus.CONFLICT);
+		}		
+	}
+
+	@Override
+	public void updateCertiDetail(StudentCertification certi,String Stuid) {
+		try{
+			StudentPersonalDetails stu = stuDao.findById(Stuid).orElseThrow( () -> new ApiException("Student doent exist", HttpStatus.NO_CONTENT));
+			certi.setStu(stu);
+			certiDao.save(certi);	
+			} catch (Exception e) {
+				throw new ApiException("Error while updating certification",HttpStatus.CONFLICT);
+			}
+		
+		
+	}
+
+	@Override
+	public void deleteDetails(String certiId) {
+		try {
+		certiDao.deleteById(certiId);
+		}catch (Exception e) {
+			throw new ApiException("Error while deleting certification",HttpStatus.CONFLICT);
 		}
-		return(certifi);
 	}
 
 }

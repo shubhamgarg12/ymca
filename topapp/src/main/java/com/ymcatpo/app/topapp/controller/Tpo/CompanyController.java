@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-
 import com.ymcatpo.app.topapp.Excel.ExcelHelper;
 import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
@@ -69,21 +66,17 @@ public class CompanyController {
 		return new ResponseEntity<>(companyService.getPersonalDetails(companyId),HttpStatus.OK);
 	}
 	// list of the companies in which the student applied
-	@GetMapping("/getCompany/{studentId}")
-	public ResponseEntity<Set<Company>> getstudent(@PathVariable String StudentId) throws Exception{
+	@GetMapping("/getListCompany/{studentId}")
+	public ResponseEntity<Set<Company>> getstudent(@PathVariable String studentId) throws Exception{
 		
-		return new ResponseEntity<>(companyService.getCompanyList(StudentId),HttpStatus.OK);
+		return new ResponseEntity<>(companyService.getCompanyList(studentId),HttpStatus.OK);
 	}
 
 	@GetMapping("/download/{companyId}")
 	 public ResponseEntity<InputStreamResource> excelCustomersReport(@PathVariable  long companyId) throws IOException {
         List<ExcelPojo> customers =  companyService.load(companyId);
-        		
-    
-    ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(customers);
-    // return IOUtils.toByteArray(in);
-    
-    HttpHeaders headers = new HttpHeaders();
+        ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(customers);    
+        HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename="+companyId+".xlsx");
     
      return ResponseEntity

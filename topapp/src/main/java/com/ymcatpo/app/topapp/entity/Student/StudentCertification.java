@@ -1,6 +1,5 @@
 package com.ymcatpo.app.topapp.entity.Student;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -21,7 +20,7 @@ public class StudentCertification {
 	private String issueDate;
 	
 	@JsonIgnore
-	@ManyToOne(targetEntity = StudentPersonalDetails.class , fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = StudentPersonalDetails.class , fetch = FetchType.EAGER)
 	@JoinColumn(name= "StudentPersonalDetails_rollNo")
 	private StudentPersonalDetails stu;
 	
