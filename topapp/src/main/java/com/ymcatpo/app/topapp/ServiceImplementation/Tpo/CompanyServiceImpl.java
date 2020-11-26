@@ -119,12 +119,7 @@ public class CompanyServiceImpl implements CompanyService  {
 			excel.setStudentFullName(student.getFullName());
 			excel.setStudentFatherName(student.getFatherName());
 			excel.setStudentMotherName(student.getMotherName());
-			
-			if(student.getGender()==0){
-					excel.setStudentGender("Male");
-				}else {
-					excel.setStudentGender("Female");
-			}
+			excel.setStudentGender(student.getGender());
 			excel.setStudentEmail(student.getEmail());
 			excel.setStudentContactNo(student.getContactNo());
 			excel.setStudentAddress(student.getAddress());
@@ -144,7 +139,7 @@ public class CompanyServiceImpl implements CompanyService  {
 			excel.setStudentEducationPgCourse(education.getPgCourse());
 			excel.setStudentEducationPgCgpa(education.getPgCgpa());
 			excel.setStudentEducationPgPassYear(education.getPgPassYear());
-			excel.setStudentEducationYear(education.getYear());
+			excel.setStudentEducationYear(education.getGapYear());
 			excel.setStudentEducationGapReason(education.getGapReason());
 			List<StudentCertification> certi = studentCertiDao.findByStu(student);
 			if(certi.isEmpty()) {

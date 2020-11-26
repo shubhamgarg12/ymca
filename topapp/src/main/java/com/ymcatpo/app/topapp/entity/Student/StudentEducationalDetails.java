@@ -28,7 +28,7 @@ public class StudentEducationalDetails {
 	private String pgCourse;
 	private float pgCgpa;
 	private int pgPassYear;
-	private int year;
+	private int gapYear;
 	private String gapReason;
 	
 	@JsonIgnore
@@ -56,7 +56,7 @@ public class StudentEducationalDetails {
 	}
 	public StudentEducationalDetails(long id, float sscMarks, int sscPassYear, float hsscMarks, String hsscStream,
 			int hsscPasYear, String gradCourse, float gradsCgpa, int gradPassYear, String pgCourse, float pgCgpa,
-			int pgPassYear, int year, String gapReason) {
+			int pgPassYear, int gapYear, String gapReason) {
 		super();
 		this.id = id;
 		this.sscMarks = sscMarks;
@@ -70,7 +70,7 @@ public class StudentEducationalDetails {
 		this.pgCourse = pgCourse;
 		this.pgCgpa = pgCgpa;
 		this.pgPassYear = pgPassYear;
-		this.year = year;
+		this.gapYear = gapYear;
 		this.gapReason = gapReason;
 
 	}
@@ -140,23 +140,19 @@ public class StudentEducationalDetails {
 	public void setPgPassYear(int pgPassYear) {
 		this.pgPassYear = pgPassYear;
 	}
-	public int getYear() {
-		return year;
+	
+	public int getGapYear() {
+		return gapYear;
 	}
-	public void setYear(int year) {
-		this.year = year;
+
+	public void setGapYear(int gapYear) {
+		this.gapYear = gapYear;
 	}
+
 	public String getGapReason() {
 		return gapReason;
 	}
-	@Override
-	public String toString() {
-		return "StudentEducationalDetails [id=" + id + ", sscMarks=" + sscMarks + ", sscPassYear=" + sscPassYear
-				+ ", hsscMarks=" + hsscMarks + ", hsscStream=" + hsscStream + ", hsscPasYear=" + hsscPasYear
-				+ ", gradCourse=" + gradCourse + ", gradsCgpa=" + gradsCgpa + ", gradPassYear=" + gradPassYear
-				+ ", pgCourse=" + pgCourse + ", pgCgpa=" + pgCgpa + ", pgPassYear=" + pgPassYear + ", year=" + year
-				+ ", gapReason=" + gapReason + "]";
-	}
+	
 	public void setGapReason(String gapReason) {
 		this.gapReason = gapReason;
 	}

@@ -11,6 +11,13 @@ public class TpoDetails {
 		private String name;
 		private String phoneNo;
 		private String tpoEmail;
+		private String branch;
+		public String getBranch() {
+			return branch;
+		}
+		public void setBranch(String branch) {
+			this.branch = branch;
+		}
 		public String getTpoId() {
 			return tpoId;
 		}
@@ -38,12 +45,13 @@ public class TpoDetails {
 		public TpoDetails() {
 		
 		}
-		public TpoDetails(String tpoId, String name, String phoneNo, String tpoEmail) {
-			
+		public TpoDetails(String tpoId, String name, String phoneNo, String tpoEmail, String branch) {
+			super();
 			this.tpoId = tpoId;
 			this.name = name;
 			this.phoneNo = phoneNo;
 			this.tpoEmail = tpoEmail;
+			this.branch = branch;
 		}
 		
 

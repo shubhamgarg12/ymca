@@ -17,7 +17,7 @@ import com.ymcatpo.app.topapp.entity.Tpo.TpoDetails;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
 
 @RestController
-@RequestMapping("/ymcca/api/tpo")
+@RequestMapping("/ymca/api/tpo")
 public class TpoController {
 	
 	@Autowired

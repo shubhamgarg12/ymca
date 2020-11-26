@@ -26,7 +26,7 @@ import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
 
 
 @RestController
-@RequestMapping("/ymcca/api/company")
+@RequestMapping("/ymca/api/company")
 public class CompanyController {
 	@Autowired
 	CompanyService companyService;

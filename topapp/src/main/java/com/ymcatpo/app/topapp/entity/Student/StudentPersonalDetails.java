@@ -26,7 +26,7 @@ public class StudentPersonalDetails {
 	private String fatherName;
 	private String motherName;
 	private String dob;
-	private int gender; // 0 Male 1 Female
+	private String gender; // 0 Male 1 Female
 	private String email; 
 	private String contactNo;
 	private String address;
@@ -83,10 +83,10 @@ public class StudentPersonalDetails {
 	public void setDob(String dob) {
 		this.dob = dob;
 	}
-	public int getGender() {
+	public String getGender() {
 		return gender;
 	}
-	public void setGender(int gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 	public String getEmail() {
@@ -129,7 +129,7 @@ public class StudentPersonalDetails {
 	public StudentPersonalDetails() {
 	}
 	public StudentPersonalDetails(String rollNo, String fullName, String fatherName, String motherName, String dob,
-			int gender, String email, String contactNo, String address, int zipCode, String state, String city) {
+			String gender, String email, String contactNo, String address, int zipCode, String state, String city) {
 		super();
 		this.rollNo = rollNo;
 		this.fullName = fullName;
