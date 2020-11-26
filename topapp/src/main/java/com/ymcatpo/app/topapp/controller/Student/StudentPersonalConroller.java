@@ -38,7 +38,7 @@ public class StudentPersonalConroller {
 	@PostMapping("/studentdetails")
 	public ResponseEntity<StudentPersonalDetails> saveStudent(@RequestBody StudentPersonalDetails student) throws Exception {
 		StudentPersonalDetails stu =this.student.saveStudent(student);
-		notificationService.sendNotificaitoin(stu.getEmail(), "Data Updated", stu.getFullName()+", your data is updated");
+		notificationService.sendNotificaitoin(stu.getEmail(), 0, stu.getFullName()+", your data is updated");
 		return new ResponseEntity<StudentPersonalDetails>(stu,HttpStatus.CREATED);
 	}
 	

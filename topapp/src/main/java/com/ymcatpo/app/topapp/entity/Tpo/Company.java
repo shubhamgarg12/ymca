@@ -25,7 +25,6 @@ public class Company {
 	private boolean backlog_Allow;
 	private int noOfBacklog; 
 	private int batchYear;
-	
 	private String lastDateApply;
 	
 	@JsonIgnore
