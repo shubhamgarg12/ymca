@@ -28,7 +28,7 @@ public class PasswordController {
 		
 	}
 	
-	@RequestMapping(value = "/reset/password/tpo", method = RequestMethod.POST)
+	@RequestMapping(value = "/reset/password/student", method = RequestMethod.POST)
 	public BasicResponse resetPasswordStudent(@PathVariable String email) {
 		
 		BasicResponse response = userService.resetPasswordStudent(email);
