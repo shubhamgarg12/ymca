@@ -1,7 +1,7 @@
 package com.ymcatpo.app.topapp.ServiceImplementation.Student;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +35,8 @@ public class CertificateServiceImpl implements CertificationService {
 	@Override
 	public void createCertiDetail(StudentCertification certi, String Stuid) {
 		try{
-		StudentPersonalDetails stu = stuDao.findById(Stuid).orElseThrow( () -> new ApiException("Student doent exist", HttpStatus.NO_CONTENT));
-		certi.setStu(stu);
+		Optional<StudentPersonalDetails> stu = stuDao.findById(Stuid);
+		certi.setStu(stu.get());
 		certiDao.save(certi);	
 		} catch (Exception e) {
 			throw new ApiException("Error while creating certification",HttpStatus.CONFLICT);

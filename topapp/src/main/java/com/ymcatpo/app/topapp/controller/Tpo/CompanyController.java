@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import com.ymcatpo.app.topapp.Excel.ExcelHelper;
 import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
+import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
 
 
 
@@ -30,8 +30,8 @@ import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
 public class CompanyController {
 	@Autowired
 	CompanyService companyService;
-	
-	
+	@Autowired
+	TpoService tpoS;
 	// get list
 	@GetMapping("/getCompany")
 	public ResponseEntity<List<Company>> getCompanyList() throws Exception{
@@ -48,7 +48,8 @@ public class CompanyController {
 	// create company
 	@PostMapping("/createCompany")
 	public ResponseEntity<?> createEntity(@RequestBody Company cmp) throws Exception{
-			companyService.CreateNew(cmp);
+			
+		companyService.CreateNew(cmp);
 			
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	} 
@@ -73,15 +74,10 @@ public class CompanyController {
 	}
 
 	@GetMapping("/download/{companyId}")
-	 public ResponseEntity<InputStreamResource> excelCustomersReport(@PathVariable  long companyId) throws IOException {
-        List<ExcelPojo> customers =  companyService.load(companyId);
+	 public ResponseEntity<?> excelCustomersReport(@RequestParam String tpoId,@PathVariable  long companyId) throws IOException, MessagingException {
+        List<ExcelPojo> customers= companyService.load(companyId);
         ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(customers);    
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename="+companyId+".xlsx");
-    
-     return ResponseEntity
-                  .ok()
-                  .headers(headers)
-                  .body(new InputStreamResource(in));
-    }
+        companyService.mailCompSender(companyId,in,tpoId);
+        return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

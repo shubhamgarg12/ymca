@@ -1,11 +1,15 @@
 package com.ymcatpo.app.topapp.ServiceImplementation.Tpo;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,12 +21,15 @@ import com.ymcatpo.app.topapp.Dao.Student.StudentPersonalDetailsDao;
 import com.ymcatpo.app.topapp.Dao.TPO.CompanyDao;
 import com.ymcatpo.app.topapp.Excel.ExcelHelper;
 import com.ymcatpo.app.topapp.Excel.ExcelPojo;
+import com.ymcatpo.app.topapp.MailService.MailerService;
 import com.ymcatpo.app.topapp.UserDefineException.ApiException;
 import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
 import com.ymcatpo.app.topapp.entity.Student.StudentEducationalDetails;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
+import com.ymcatpo.app.topapp.entity.Tpo.TpoDetails;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
+import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
 
 @Service
 public class CompanyServiceImpl implements CompanyService  {
@@ -35,11 +42,19 @@ public class CompanyServiceImpl implements CompanyService  {
 	private StudentEduccationalDetailsDao studentEduDao;
 	@Autowired
 	private StudentCertificationDao studentCertiDao;
-	
-	
+	@Autowired
+	private MailerService mailService;
+	@Autowired
+	private TpoService tpoSer;
 	@Override
 	public Company CreateNew(Company cmp) {
-		return companyDao.save(cmp);
+		try { 
+		Company conmpy=companyDao.save(cmp);
+		 	return companyDao.getOne(conmpy.getComapnyId());
+		}catch(Exception e) {
+			throw new ApiException("Error  while creating company", HttpStatus.CONFLICT);
+		}
+		 	
 	}
 
 	@Override
@@ -149,24 +164,21 @@ public class CompanyServiceImpl implements CompanyService  {
 				excel.setStudentcertificationIssueDate(null);
 				
 			}else {
-				StringBuffer sb[] = new StringBuffer[4];
-				boolean isFirst= true;
+				StringJoiner sb1 = new StringJoiner(", ");
+				StringJoiner sb2 = new StringJoiner(", ");
+				StringJoiner sb3 = new StringJoiner(", ");
+				StringJoiner sb4 = new StringJoiner(", ");
+				
 			for(StudentCertification certifica :certi) {
-				if(! isFirst) {
-					sb[0].append(", ");
-					sb[1].append(", ");
-					sb[2].append(", ");
-					sb[3].append(", ");
-				}
-				sb[0].append(certifica.getCertificateId());
-				sb[2].append(certifica.getCertiTitle());
-				sb[1].append(certifica.getOrgiDetails());
-				sb[3].append(certifica.getIssueDate());
-				isFirst= false;			}
-			excel.setStudentcertificationId(sb[0].toString());
-			excel.setStudentcertificationOrgiDetails(sb[1].toString());
-			excel.setStudentcertificationTitle(sb[2].toString());
-			excel.setStudentcertificationIssueDate(sb[3].toString());
+				sb1.add((CharSequence) (certifica.getCertificateId()));
+				sb2.add((CharSequence) (certifica.getOrgiDetails()));
+				sb3.add((CharSequence) (certifica.getCertiTitle() ));
+				sb4.add((CharSequence) (certifica.getIssueDate()));
+			}
+			excel.setStudentcertificationId(sb1.toString());
+			excel.setStudentcertificationOrgiDetails(sb2.toString());
+			excel.setStudentcertificationTitle(sb3.toString());
+			excel.setStudentcertificationIssueDate(sb4.toString());
 			
 			}
 			tutorials.add(excel);
@@ -174,6 +186,13 @@ public class CompanyServiceImpl implements CompanyService  {
 		
 	    return tutorials;
 		
+	}
+
+	@Override
+	public boolean mailCompSender(long companyId, ByteArrayInputStream in, String tpoId) throws IOException, MessagingException {
+		TpoDetails tpo = tpoSer.getTpo(tpoId);
+		mailService.sendattachment(Long.toString(companyId), in, tpo.getTpoEmail());
+		return false;
 	}
 	
 }

@@ -3,10 +3,23 @@ package com.ymcatpo.app.topapp.MailService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
+
+import java.io.ByteArrayInputStream;
+
+import java.io.IOException;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
+
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Service
 public class MailerService {
@@ -106,5 +119,43 @@ public class MailerService {
 			System.out.println("Email Sent!");
 		}
 	}
+	
+	@Async
+	public void sendattachment( String fileName,ByteArrayInputStream in,String email) throws IOException, MessagingException {
+		
+		 MimeMessage message = javaMailSender.createMimeMessage();
+		 MimeMessageHelper helper = null;
+		 try {	
+	            helper = new MimeMessageHelper(message, true);
+	            helper.setFrom("payxyztpo@gmail.com");
+	            helper.setTo(email);
+	            helper.setSubject("Test");
+	            
+	            
+
+	            helper.addAttachment(fileName+".xlsx", new ByteArrayResource(IOUtils.toByteArray(in)));
+	            helper.setText("", true);
+	            System.out.println("mail send");
+	            javaMailSender.send(message);
+	            System.out.println("done");
+		 } catch (MessagingException e ) {
+	            throw e;
+	        }
+	}        
+		
+		/*
+		 * JavaMailSenderImpl sender = new JavaMailSenderImpl();
+		 * sender.setHost("smtp.gmail.com"); sender.setPort(587); Properties props = new
+		 * Properties(); props.put("mail.smtp.ssl.enable", "true"); MimeMessage message
+		 * = sender.createMimeMessage(); MimeMessageHelper helper = new
+		 * MimeMessageHelper(message, true, CharEncoding.UTF_8); try {
+		 * helper.setFrom("payxyztpo@gmail.com"); helper.setTo(email);
+		 * helper.addAttachment(fileName, new
+		 * ByteArrayResource(IOUtils.toByteArray(in)));
+		 * helper.setText("Thank you for ordering!"); sender.send(message); } catch
+		 * (MessagingException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
+	
 	
 }
