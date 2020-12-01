@@ -23,6 +23,8 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private String department;
+    private String phoneNumber;
      
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -40,6 +42,23 @@ public class User {
 		this.id = id;
 	}
 	
+	
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
 	public String getName() {
 		return name;

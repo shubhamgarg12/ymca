@@ -11,8 +11,8 @@ import com.ymcatpo.app.topapp.Dao.Student.StudentEduccationalDetailsDao;
 import com.ymcatpo.app.topapp.Dao.Student.StudentPersonalDetailsDao;
 import com.ymcatpo.app.topapp.entity.Student.StudentEducationalDetails;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
-import com.ymcatpo.app.topapp.serviceInterface.Strudent.StudentEducationalDetailsService;
-import com.ymcatpo.app.topapp.UserDefineException.ApiException;
+import com.ymcatpo.app.topapp.exception.ApiException;
+import com.ymcatpo.app.topapp.serviceInterface.Student.StudentEducationalDetailsService;
 @Service
 public class StudentEdducationServiseImpli implements StudentEducationalDetailsService {
 	@Autowired

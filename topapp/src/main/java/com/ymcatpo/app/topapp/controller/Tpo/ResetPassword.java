@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ymcatpo.app.topapp.Dao.Student.StudentPersonalDetailsDao;
 import com.ymcatpo.app.topapp.MailService.MailerService;
-import com.ymcatpo.app.topapp.UserDefineException.ApiException;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
+import com.ymcatpo.app.topapp.exception.ApiException;
 
 @RestController
 @RequestMapping("/ymca/api/password")

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ymcatpo.app.topapp.entity.Student.StudentEducationalDetails;
-import com.ymcatpo.app.topapp.serviceInterface.Strudent.StudentEducationalDetailsService;
+import com.ymcatpo.app.topapp.serviceInterface.Student.StudentEducationalDetailsService;
 
 
 @RestController

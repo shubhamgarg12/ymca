@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.ymcatpo.app.topapp.Dao.Student.StudentCertificationDao;
 import com.ymcatpo.app.topapp.Dao.Student.StudentPersonalDetailsDao;
-import com.ymcatpo.app.topapp.UserDefineException.ApiException;
 import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
-import com.ymcatpo.app.topapp.serviceInterface.Strudent.CertificationService;
+import com.ymcatpo.app.topapp.exception.ApiException;
+import com.ymcatpo.app.topapp.serviceInterface.Student.CertificationService;
 
 @Service
 public class CertificateServiceImpl implements CertificationService {

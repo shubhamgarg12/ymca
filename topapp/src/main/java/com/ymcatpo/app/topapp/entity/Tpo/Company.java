@@ -15,7 +15,7 @@ public class Company {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long comapnyId;
+	private long companyId;
 	private String companyName;
 	private String jobProfile;
 	private String jobPackage;
@@ -41,11 +41,11 @@ public class Company {
 	
 	
 	
-	public Company(long comapnyId, String companyName, String jobProfile, String jobPackage, String jobDescription,
+	public Company(long companyId, String companyName, String jobProfile, String jobPackage, String jobDescription,
 			int noOfVacancies, String eligibilityCriteria, boolean backlog_Allow, int noOfBacklog, int batchYear,
 			String lastDateApply) {
 		
-		this.comapnyId = comapnyId;
+		this.companyId = companyId;
 		this.companyName = companyName;
 		this.jobProfile = jobProfile;
 		this.jobPackage = jobPackage;
@@ -73,11 +73,11 @@ public class Company {
 
 
 
-	public long getComapnyId() {
-		return comapnyId;
+	public long getCompanyId() {
+		return companyId;
 	}
-	public void setComapnyId(long comapnyId) {
-		this.comapnyId = comapnyId;
+	public void setComapnyId(long companyId) {
+		this.companyId = companyId;
 	}
 	public Set<StudentPersonalDetails> getStudent() {
 		return student;

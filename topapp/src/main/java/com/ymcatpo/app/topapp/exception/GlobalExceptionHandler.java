@@ -1,4 +1,4 @@
-package com.ymcatpo.app.topapp.UserDefineException;
+package com.ymcatpo.app.topapp.exception;
 
 import java.util.Date;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
-import com.ymcatpo.app.topapp.serviceInterface.Strudent.CertificationService;
+import com.ymcatpo.app.topapp.serviceInterface.Student.CertificationService;
 
 @RestController
 @RequestMapping("/ymca/api/certi")

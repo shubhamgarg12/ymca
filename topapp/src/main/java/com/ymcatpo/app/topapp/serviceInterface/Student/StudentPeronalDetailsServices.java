@@ -1,4 +1,4 @@
-package com.ymcatpo.app.topapp.serviceInterface.Strudent;
+package com.ymcatpo.app.topapp.serviceInterface.Student;
 
 import java.util.List;
 

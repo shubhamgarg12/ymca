@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.ymcatpo.app.topapp.Dao.Student.StudentPersonalDetailsDao;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
-import com.ymcatpo.app.topapp.serviceInterface.Strudent.StudentPeronalDetailsServices;
-import com.ymcatpo.app.topapp.UserDefineException.ApiException;
+import com.ymcatpo.app.topapp.exception.ApiException;
+import com.ymcatpo.app.topapp.serviceInterface.Student.StudentPeronalDetailsServices;
 
 @Service
 public class StudentPersonalDetailsServiceImpli implements StudentPeronalDetailsServices {

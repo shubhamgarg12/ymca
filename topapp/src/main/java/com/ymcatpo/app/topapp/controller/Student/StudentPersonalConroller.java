@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ymcatpo.app.topapp.MailService.MailerService;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
-import com.ymcatpo.app.topapp.serviceInterface.Strudent.StudentPeronalDetailsServices;
+import com.ymcatpo.app.topapp.serviceInterface.Student.StudentPeronalDetailsServices;
 
 @RestController
 @RequestMapping("/ymca/api/student")

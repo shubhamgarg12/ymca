@@ -23,12 +23,12 @@ import com.ymcatpo.app.topapp.Dao.TPO.CompanyDao;
 import com.ymcatpo.app.topapp.Excel.ExcelHelper;
 import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.MailService.MailerService;
-import com.ymcatpo.app.topapp.UserDefineException.ApiException;
 import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
 import com.ymcatpo.app.topapp.entity.Student.StudentEducationalDetails;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
 import com.ymcatpo.app.topapp.entity.Tpo.TpoDetails;
+import com.ymcatpo.app.topapp.exception.ApiException;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
 
@@ -50,8 +50,8 @@ public class CompanyServiceImpl implements CompanyService  {
 	@Override
 	public Company CreateNew(Company cmp) {
 		try { 
-		Company conmpy=companyDao.save(cmp);
-		 	return companyDao.getOne(conmpy.getComapnyId());
+		Company company=companyDao.save(cmp);
+		 	return companyDao.getOne(company.getCompanyId());
 		}catch(Exception e) {
 			throw new ApiException("Error  while creating company", HttpStatus.CONFLICT);
 		}
