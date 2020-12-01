@@ -11,5 +11,5 @@ public interface CertificationService {
 	List<StudentCertification> getCertifiactionDetails(String Stuid);
 	void createCertiDetail(StudentCertification certi,String Stuid );
 	void updateCertiDetail(StudentCertification certi,String Stuid);
-	void deleteDetails (String certiId);
+	void deleteDetails (long certiId);
 }

@@ -10,7 +10,7 @@ import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 
 @Repository
-public interface StudentCertificationDao extends JpaRepository<StudentCertification,String> {
+public interface StudentCertificationDao extends JpaRepository<StudentCertification,Long> {
 
 	public List<StudentCertification> findByStu(StudentPersonalDetails stu);
 	

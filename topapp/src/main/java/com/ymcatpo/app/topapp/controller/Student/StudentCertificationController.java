@@ -42,7 +42,7 @@ public class StudentCertificationController {
 	}
 	
 	@DeleteMapping("/certidetails/{certiId}")
-	public ResponseEntity<?> deleteDetails(@PathVariable String certiId){
+	public ResponseEntity<?> deleteDetails(@PathVariable("certiId") long certiId){
 			certi.deleteDetails(certiId);
 		return new ResponseEntity<>(HttpStatus.OK);
 		

@@ -3,6 +3,7 @@ package com.ymcatpo.app.topapp.ServiceImplementation.Tpo;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -170,7 +171,7 @@ public class CompanyServiceImpl implements CompanyService  {
 				StringJoiner sb4 = new StringJoiner(", ");
 				
 			for(StudentCertification certifica :certi) {
-				sb1.add((CharSequence) (certifica.getCertificateId()));
+				sb1.add((CharSequence) (String.valueOf(certifica.getCertificateId())));
 				sb2.add((CharSequence) (certifica.getOrgiDetails()));
 				sb3.add((CharSequence) (certifica.getCertiTitle() ));
 				sb4.add((CharSequence) (certifica.getIssueDate()));

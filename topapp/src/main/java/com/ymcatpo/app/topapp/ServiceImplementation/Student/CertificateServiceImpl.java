@@ -57,7 +57,7 @@ public class CertificateServiceImpl implements CertificationService {
 	}
 
 	@Override
-	public void deleteDetails(String certiId) {
+	public void deleteDetails(long certiId) {
 		try {
 		certiDao.deleteById(certiId);
 		}catch (Exception e) {

@@ -2,6 +2,8 @@ package com.ymcatpo.app.topapp.entity.Student;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class StudentCertification {
 
 	@Id
-	private String certificateId; 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long certificateId; 
 	private String orgiDetails; 
 	private String certiTitle; 
 	
@@ -25,8 +28,6 @@ public class StudentCertification {
 	private StudentPersonalDetails stu;
 	
 	
-	
-	
 	public StudentPersonalDetails getStu() {
 		return stu;
 	}
@@ -35,10 +36,10 @@ public class StudentCertification {
 	}
 	
 	
-	public String getCertificateId() {
+	public long getCertificateId() {
 		return certificateId;
 	}
-	public void setCertificateId(String certificateId) {
+	public void setCertificateId(long certificateId) {
 		this.certificateId = certificateId;
 	}
 	public String getOrgiDetails() {
@@ -64,7 +65,7 @@ public class StudentCertification {
 	public StudentCertification() {
 		
 	}
-	public StudentCertification(String certificateId, String orgiDetails, String certiTitle, String issueDate,
+	public StudentCertification(long certificateId, String orgiDetails, String certiTitle, String issueDate,
 			StudentPersonalDetails stu) {
 		this.certificateId = certificateId;
 		this.orgiDetails = orgiDetails;
