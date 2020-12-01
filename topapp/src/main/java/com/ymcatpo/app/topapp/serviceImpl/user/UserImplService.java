@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ymcatpo.app.topapp.MailService.MailerService;
 import com.ymcatpo.app.topapp.config.JwtTokenUtil;
 import com.ymcatpo.app.topapp.entity.user.Role;
 import com.ymcatpo.app.topapp.entity.user.User;
@@ -45,6 +48,9 @@ public class UserImplService implements UserService {
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	MailerService mailService;
 
 	@Override
 	public AuthenticateResponse login(User user) {
@@ -139,6 +145,30 @@ public class UserImplService implements UserService {
 			response.setStatus(HttpStatus.CREATED.toString());
 		}else {
 			throw new ApiException("Invalid Password",HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+
+	@Override
+	public BasicResponse resetPasswordStudent(String username) {
+		User user = userRepo.getUserByUsername(username);
+		BasicResponse response = new BasicResponse();
+		if(user != null) {
+			String password =  RandomStringUtils.random(10, true, true);
+			try {
+				mailService.sendNotificaitoin(user.getEmail(), 1, password);
+				user.setPassword(bCryptPasswordEncoder.encode(password));			
+				userRepo.save(user);
+				response.setMessage("Success");
+				response.setStatus(HttpStatus.CREATED.toString());
+			} catch (MailException e) {
+				throw new ApiException("Mail Error",HttpStatus.BAD_REQUEST);
+			} catch (InterruptedException e) {
+				throw new ApiException("Error Occured",HttpStatus.BAD_REQUEST);
+			}
+		}else {
+			throw new ApiException("No user found",HttpStatus.BAD_REQUEST);
+			
 		}
 		return response;
 	}

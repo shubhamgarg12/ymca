@@ -28,6 +28,13 @@ public class PasswordController {
 		
 	}
 	
-	
+	@RequestMapping(value = "/reset/password/tpo", method = RequestMethod.POST)
+	public BasicResponse resetPasswordStudent(@PathVariable String email) {
+		
+		BasicResponse response = userService.resetPasswordStudent(email);
+		return response;
+		
+	}
+
 	
 }
