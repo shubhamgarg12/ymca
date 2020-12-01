@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ymcatpo.app.topapp.config.JwtTokenUtil;
@@ -19,6 +20,7 @@ import com.ymcatpo.app.topapp.exception.ApiException;
 import com.ymcatpo.app.topapp.model.AuthenticateResponse;
 import com.ymcatpo.app.topapp.model.BasicResponse;
 import com.ymcatpo.app.topapp.model.MyUserDetails;
+import com.ymcatpo.app.topapp.model.Password;
 import com.ymcatpo.app.topapp.service.user.UserService;
 import com.ymcatpo.app.topapp.userDao.RoleRepository;
 import com.ymcatpo.app.topapp.userDao.UserRepository;
@@ -40,6 +42,9 @@ public class UserImplService implements UserService {
 	
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public AuthenticateResponse login(User user) {
@@ -75,6 +80,8 @@ public class UserImplService implements UserService {
 			Optional<Role> role = roleRepository.findById(2);
 			roles.add(role.get());
 			user.setRoles(roles);
+			bCryptPasswordEncoder.encode(user.getPassword());
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 			User userSaved = userRepo.save(user);
 			if (userSaved != null) {
 
@@ -102,6 +109,8 @@ public class UserImplService implements UserService {
 			Optional<Role> role = roleRepository.findById(1);
 			roles.add(role.get());
 			user.setRoles(roles);
+			bCryptPasswordEncoder.encode(user.getPassword());
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 			User userSaved = userRepo.save(user);
 			if (userSaved != null) {
 
@@ -114,6 +123,23 @@ public class UserImplService implements UserService {
 			throw new ApiException("User already exist", HttpStatus.NOT_ACCEPTABLE);
 		}
 
+		return response;
+	}
+
+	@Override
+	public BasicResponse changePasswordForTpo(Password pass) {
+		
+		User user = userRepo.getUserByUsername(pass.getUsername());
+		BasicResponse response = new BasicResponse();
+		if(bCryptPasswordEncoder.matches(pass.getPrevPassword(), user.getPassword())) {
+			bCryptPasswordEncoder.encode(pass.getNewPassword());
+			user.setPassword(bCryptPasswordEncoder.encode(pass.getNewPassword()));			
+			userRepo.save(user);
+			response.setMessage("Success");
+			response.setStatus(HttpStatus.CREATED.toString());
+		}else {
+			throw new ApiException("Invalid Password",HttpStatus.BAD_REQUEST);
+		}
 		return response;
 	}
 

@@ -19,6 +19,7 @@ import com.ymcatpo.app.topapp.entity.user.User;
 import com.ymcatpo.app.topapp.model.AuthenticateResponse;
 import com.ymcatpo.app.topapp.model.BasicResponse;
 import com.ymcatpo.app.topapp.model.MyUserDetails;
+import com.ymcatpo.app.topapp.model.Password;
 import com.ymcatpo.app.topapp.service.user.UserService;
 
 
@@ -50,11 +51,13 @@ public class UserController {
 		return response;
 		
 	}
+
 	@RequestMapping(value = "/register/tpo", method = RequestMethod.POST)
-	public BasicResponse registerTPO(@RequestBody User user) {
+	public BasicResponse registerTpo(@RequestBody User user) {
 		
 		BasicResponse response = userService.registerTPO(user);
 		return response;
 		
 	}
+	
 }
