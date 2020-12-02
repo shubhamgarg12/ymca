@@ -76,7 +76,7 @@ public class UserImplService implements UserService {
 	}
 
 	@Override
-	public BasicResponse registerUser(User user) {
+	public BasicResponse registerUser(User user) throws MailException, InterruptedException {
 
 		User checkUser = userRepo.getUserByUsername(user.getUsername());
 		BasicResponse response = new BasicResponse();
@@ -93,6 +93,7 @@ public class UserImplService implements UserService {
 
 				response.setMessage("Success");
 				response.setStatus(HttpStatus.CREATED.toString());
+				mailService.sendNotificaitoin(user.getEmail(), 0, user.getName());
 			} else {
 				throw new ApiException("Error", HttpStatus.BAD_GATEWAY);
 			}
@@ -105,7 +106,7 @@ public class UserImplService implements UserService {
 	}
 
 	@Override
-	public BasicResponse registerTPO(User user) {
+	public BasicResponse registerTPO(User user) throws MailException, InterruptedException {
 
 		User checkUser = userRepo.getUserByUsername(user.getUsername());
 		BasicResponse response = new BasicResponse();
@@ -122,6 +123,7 @@ public class UserImplService implements UserService {
 
 				response.setMessage("Success");
 				response.setStatus(HttpStatus.CREATED.toString());
+				mailService.sendNotificaitoin(user.getEmail(), 3, user.getName());
 			} else {
 				throw new ApiException("Error", HttpStatus.BAD_GATEWAY);
 			}
@@ -133,7 +135,7 @@ public class UserImplService implements UserService {
 	}
 
 	@Override
-	public BasicResponse changePasswordForTpo(Password pass) {
+	public BasicResponse changePasswordForTpo(Password pass) throws MailException, InterruptedException {
 		
 		User user = userRepo.getUserByUsername(pass.getUsername());
 		BasicResponse response = new BasicResponse();
@@ -143,6 +145,7 @@ public class UserImplService implements UserService {
 			userRepo.save(user);
 			response.setMessage("Success");
 			response.setStatus(HttpStatus.CREATED.toString());
+			mailService.sendNotificaitoin(user.getEmail(), 2, "");
 		}else {
 			throw new ApiException("Invalid Password",HttpStatus.BAD_REQUEST);
 		}

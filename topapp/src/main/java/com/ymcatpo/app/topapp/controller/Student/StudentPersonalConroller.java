@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.ymcatpo.app.topapp.MailService.MailerService;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.serviceInterface.Student.StudentPeronalDetailsServices;
 
@@ -20,8 +19,6 @@ import com.ymcatpo.app.topapp.serviceInterface.Student.StudentPeronalDetailsServ
 @RequestMapping("/ymca/api/student")
 public class StudentPersonalConroller {
 	
-	@Autowired
-	private MailerService  notificationService;
 	@Autowired
 	private StudentPeronalDetailsServices student;
 	
@@ -38,7 +35,6 @@ public class StudentPersonalConroller {
 	@PostMapping("/studentdetails")
 	public ResponseEntity<StudentPersonalDetails> saveStudent(@RequestBody StudentPersonalDetails student) throws Exception {
 		StudentPersonalDetails stu =this.student.saveStudent(student);
-		notificationService.sendNotificaitoin(stu.getEmail(), 0, stu.getFullName()+", your data is updated");
 		return new ResponseEntity<StudentPersonalDetails>(stu,HttpStatus.CREATED);
 	}
 	
