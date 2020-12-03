@@ -1,6 +1,7 @@
 package com.ymcatpo.app.topapp.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class PasswordController {
 	UserService userService;
 	
 	@RequestMapping(value = "/change/password/tpo", method = RequestMethod.POST)
-	public BasicResponse changePasswordTPO(@RequestBody Password user) {
+	public BasicResponse changePasswordTPO(@RequestBody Password user) throws MailException, InterruptedException {
 		
 		BasicResponse response = userService.changePasswordForTpo(user);
 		return response;

@@ -57,6 +57,7 @@ public class CompanyController {
 	public ResponseEntity<?> updateCompannyStudent(@RequestParam (name = "studentId") String studentId,
 													@RequestParam (name = "companyId") long companyId)throws Exception{
 			companyService.AppliedCompany(studentId, companyId);
+			
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	// list the student applied for a particular company

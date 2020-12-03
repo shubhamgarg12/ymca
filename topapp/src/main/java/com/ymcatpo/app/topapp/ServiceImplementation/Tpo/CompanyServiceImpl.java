@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import com.ymcatpo.app.topapp.Dao.Student.StudentCertificationDao;
@@ -57,7 +58,7 @@ public class CompanyServiceImpl implements CompanyService  {
 	}
 
 	@Override
-	public void AppliedCompany(String stuId, Long companyId) {
+	public void AppliedCompany(String stuId, Long companyId) throws MailException, InterruptedException {
 			Optional<StudentPersonalDetails> stu=	studentDao.findById(stuId);
 		Optional<Company>	comp =companyDao.findById(companyId);
 		
@@ -75,7 +76,7 @@ public class CompanyServiceImpl implements CompanyService  {
 		stu.get().setCompany_id(temp2);
 		companyDao.save(comp.get());
 		studentDao.save(stu.get());
-		// fire an Confirmation email 
+		mailService.sendNotificaitoin(stu.get().getEmail(), 4, comp.get().getCompanyName());
 	}
 
 	@Override
