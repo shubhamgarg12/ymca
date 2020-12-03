@@ -42,13 +42,13 @@ public class UserImplService implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Autowired
 	MailerService mailService;
 
@@ -81,7 +81,7 @@ public class UserImplService implements UserService {
 		User checkUser = userRepo.getUserByUsername(user.getUsername());
 		BasicResponse response = new BasicResponse();
 		if (checkUser == null) {
-			
+
 			Set<Role> roles = new HashSet<Role>();
 			Optional<Role> role = roleRepository.findById(2);
 			roles.add(role.get());
@@ -96,7 +96,7 @@ public class UserImplService implements UserService {
 			} else {
 				throw new ApiException("Error", HttpStatus.BAD_GATEWAY);
 			}
-		}else {
+		} else {
 			throw new ApiException("User already exist", HttpStatus.NOT_ACCEPTABLE);
 		}
 
@@ -110,7 +110,7 @@ public class UserImplService implements UserService {
 		User checkUser = userRepo.getUserByUsername(user.getUsername());
 		BasicResponse response = new BasicResponse();
 		if (checkUser == null) {
-			
+
 			Set<Role> roles = new HashSet<Role>();
 			Optional<Role> role = roleRepository.findById(1);
 			roles.add(role.get());
@@ -125,7 +125,7 @@ public class UserImplService implements UserService {
 			} else {
 				throw new ApiException("Error", HttpStatus.BAD_GATEWAY);
 			}
-		}else {
+		} else {
 			throw new ApiException("User already exist", HttpStatus.NOT_ACCEPTABLE);
 		}
 
@@ -134,17 +134,17 @@ public class UserImplService implements UserService {
 
 	@Override
 	public BasicResponse changePasswordForTpo(Password pass) {
-		
+
 		User user = userRepo.getUserByUsername(pass.getUsername());
 		BasicResponse response = new BasicResponse();
-		if(bCryptPasswordEncoder.matches(pass.getPrevPassword(), user.getPassword())) {
+		if (bCryptPasswordEncoder.matches(pass.getPrevPassword(), user.getPassword())) {
 			bCryptPasswordEncoder.encode(pass.getNewPassword());
-			user.setPassword(bCryptPasswordEncoder.encode(pass.getNewPassword()));			
+			user.setPassword(bCryptPasswordEncoder.encode(pass.getNewPassword()));
 			userRepo.save(user);
 			response.setMessage("Success");
 			response.setStatus(HttpStatus.CREATED.toString());
-		}else {
-			throw new ApiException("Invalid Password",HttpStatus.BAD_REQUEST);
+		} else {
+			throw new ApiException("Invalid Password", HttpStatus.BAD_REQUEST);
 		}
 		return response;
 	}
@@ -153,24 +153,59 @@ public class UserImplService implements UserService {
 	public BasicResponse resetPasswordStudent(String username) {
 		User user = userRepo.getUserByUsername(username);
 		BasicResponse response = new BasicResponse();
-		if(user != null) {
-			String password =  RandomStringUtils.random(10, true, true);
+		if (user != null) {
+			String password = RandomStringUtils.random(10, true, true);
 			try {
 				mailService.sendNotificaitoin(user.getEmail(), 1, password);
-				user.setPassword(bCryptPasswordEncoder.encode(password));			
+				user.setPassword(bCryptPasswordEncoder.encode(password));
 				userRepo.save(user);
 				response.setMessage("Success");
 				response.setStatus(HttpStatus.CREATED.toString());
 			} catch (MailException e) {
-				throw new ApiException("Mail Error",HttpStatus.BAD_REQUEST);
+				throw new ApiException("Mail Error", HttpStatus.BAD_REQUEST);
 			} catch (InterruptedException e) {
-				throw new ApiException("Error Occured",HttpStatus.BAD_REQUEST);
+				throw new ApiException("Error Occured", HttpStatus.BAD_REQUEST);
 			}
-		}else {
-			throw new ApiException("No user found",HttpStatus.BAD_REQUEST);
-			
+		} else {
+			throw new ApiException("No user found", HttpStatus.BAD_REQUEST);
+
 		}
 		return response;
+	}
+
+	public BasicResponse updateTpo(User user,String username) {
+		User checkUser = userRepo.getUserByUsername(username);
+		BasicResponse response = new BasicResponse();
+		if (checkUser != null) {
+			checkUser.setEmail(user.getEmail());
+			checkUser.setName(user.getName());
+			checkUser.setDepartment(user.getDepartment());
+			checkUser.setPhoneNumber(user.getDepartment());
+			checkUser.setUsername(username);
+			checkUser.setId(checkUser.getId());
+			User userSaved = userRepo.save(checkUser);
+			if (userSaved != null) {
+
+				response.setMessage("Success");
+				response.setStatus(HttpStatus.CREATED.toString());
+			} else {
+				throw new ApiException("Error", HttpStatus.BAD_GATEWAY);
+			}
+		}
+		return response;
+
+	}
+	public User getTpoById(String username) {
+		User checkUser = userRepo.getUserByUsername(username);
+		BasicResponse response = new BasicResponse();
+		if (checkUser != null) {
+				response.setMessage("Success");
+				response.setStatus(HttpStatus.CREATED.toString());
+			} else {
+				throw new ApiException("Error", HttpStatus.BAD_GATEWAY);
+			}
+		return checkUser;
+
 	}
 
 }

@@ -13,30 +13,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ymcatpo.app.topapp.entity.Tpo.TpoDetails;
-import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
+
+import com.ymcatpo.app.topapp.entity.user.User;
+import com.ymcatpo.app.topapp.model.BasicResponse;
+import com.ymcatpo.app.topapp.service.user.UserService;
 
 @RestController
 @RequestMapping("/ymca/api/tpo")
 public class TpoController {
 	
 	@Autowired
-	TpoService tpo;
+	UserService tpo;
 	
-	@GetMapping("/getTpo/{TpoId}")
-	public ResponseEntity<TpoDetails> GetTpo(@PathVariable String tpoId)throws Exception{
-				return new ResponseEntity<>(tpo.getTpo(tpoId), HttpStatus.OK);
+	@GetMapping("/getTpo/{username}")
+	public ResponseEntity<User> GetTpo(@PathVariable String username)throws Exception{
+				return new ResponseEntity<>(tpo.getTpoById(username), HttpStatus.OK);
 	}
 	
-	@PutMapping("/updateTpo/{TpoId}")
-	public ResponseEntity<TpoDetails> UpdateTpo(@RequestBody TpoDetails tDetail,@PathVariable String tpoId)throws Exception 
+	@PostMapping("/updateTpo/{username}")
+	public ResponseEntity<BasicResponse> UpdateTpo(@RequestBody User tDetail,@PathVariable String username)throws Exception 
 	{
-		return new ResponseEntity<>(tpo.putTpo(tDetail, tpoId),HttpStatus.OK);
+		return new ResponseEntity<>(tpo.updateTpo(tDetail,username),HttpStatus.OK);
 	}
 	
 	@PostMapping("/createTpo")
-	public ResponseEntity<?> createTpo(@RequestBody TpoDetails tDetails) throws Exception {
-		 tpo.createTpo(tDetails);
+	public ResponseEntity<BasicResponse> createTpo(@RequestBody User tDetails) throws Exception {
+		 tpo.registerTPO(tDetails);
 		 return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	

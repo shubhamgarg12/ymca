@@ -2,8 +2,6 @@ package com.ymcatpo.app.topapp.ServiceImplementation.Tpo;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,17 +18,17 @@ import com.ymcatpo.app.topapp.Dao.Student.StudentCertificationDao;
 import com.ymcatpo.app.topapp.Dao.Student.StudentEduccationalDetailsDao;
 import com.ymcatpo.app.topapp.Dao.Student.StudentPersonalDetailsDao;
 import com.ymcatpo.app.topapp.Dao.TPO.CompanyDao;
-import com.ymcatpo.app.topapp.Excel.ExcelHelper;
 import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.MailService.MailerService;
 import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
 import com.ymcatpo.app.topapp.entity.Student.StudentEducationalDetails;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
-import com.ymcatpo.app.topapp.entity.Tpo.TpoDetails;
+import com.ymcatpo.app.topapp.entity.user.User;
 import com.ymcatpo.app.topapp.exception.ApiException;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
-import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
+import com.ymcatpo.app.topapp.userDao.UserRepository;
+
 
 @Service
 public class CompanyServiceImpl implements CompanyService  {
@@ -46,7 +44,7 @@ public class CompanyServiceImpl implements CompanyService  {
 	@Autowired
 	private MailerService mailService;
 	@Autowired
-	private TpoService tpoSer;
+	UserRepository userRepo;
 	@Override
 	public Company CreateNew(Company cmp) {
 		try { 
@@ -191,8 +189,8 @@ public class CompanyServiceImpl implements CompanyService  {
 
 	@Override
 	public boolean mailCompSender(long companyId, ByteArrayInputStream in, String tpoId) throws IOException, MessagingException {
-		TpoDetails tpo = tpoSer.getTpo(tpoId);
-		mailService.sendattachment(Long.toString(companyId), in, tpo.getTpoEmail());
+		User user = userRepo.getUserByUsername(tpoId);
+		mailService.sendattachment(Long.toString(companyId), in, user.getEmail());
 		return false;
 	}
 	

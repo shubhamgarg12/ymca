@@ -1,25 +1,15 @@
   package com.ymcatpo.app.topapp.controller.user;
 
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.ymcatpo.app.topapp.config.JwtTokenUtil;
 import com.ymcatpo.app.topapp.entity.user.User;
 import com.ymcatpo.app.topapp.model.AuthenticateResponse;
 import com.ymcatpo.app.topapp.model.BasicResponse;
-import com.ymcatpo.app.topapp.model.MyUserDetails;
-import com.ymcatpo.app.topapp.model.Password;
 import com.ymcatpo.app.topapp.service.user.UserService;
 
 

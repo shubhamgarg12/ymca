@@ -12,5 +12,7 @@ public interface UserService {
 	BasicResponse registerTPO(User user);
 	BasicResponse changePasswordForTpo(Password pass);
 	BasicResponse resetPasswordStudent(String email);
+	User getTpoById(String username);
+	BasicResponse updateTpo(User user,String username);
 
 }

@@ -21,7 +21,7 @@ import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
-import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
+
 
 
 
@@ -30,8 +30,7 @@ import com.ymcatpo.app.topapp.serviceInterface.Tpo.TpoService;
 public class CompanyController {
 	@Autowired
 	CompanyService companyService;
-	@Autowired
-	TpoService tpoS;
+
 	// get list
 	@GetMapping("/getCompany")
 	public ResponseEntity<List<Company>> getCompanyList() throws Exception{
