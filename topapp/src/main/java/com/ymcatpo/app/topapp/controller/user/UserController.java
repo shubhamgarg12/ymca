@@ -23,7 +23,7 @@ import com.ymcatpo.app.topapp.service.user.UserService;
 
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/ymca/api/user")
 @CrossOrigin
 public class UserController {
 
@@ -46,7 +46,6 @@ public class UserController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public BasicResponse registerStudent(@RequestBody User user) throws Exception{
 		BasicResponse response = userService.registerUser(user);
-		
 		return response;
 		
 	}

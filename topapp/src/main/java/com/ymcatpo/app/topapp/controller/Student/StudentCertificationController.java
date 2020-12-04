@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ymcatpo.app.topapp.entity.Student.StudentCertification;
+import com.ymcatpo.app.topapp.model.BasicResponse;
 import com.ymcatpo.app.topapp.serviceInterface.Student.CertificationService;
 
 @RestController
@@ -22,10 +23,13 @@ public class StudentCertificationController {
 	private CertificationService certi;
 	
 	@PostMapping("/certidetail/{rollNo}")
-	public ResponseEntity<?> createDetails( @PathVariable String rollNo,
+	public ResponseEntity<BasicResponse> createDetails( @PathVariable String rollNo,
 											@RequestBody StudentCertification cetification) throws Exception{
 		certi.createCertiDetail(cetification, rollNo);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		BasicResponse res = new BasicResponse();
+		res.setMessage("Success");
+		res.setStatus("201");
+		return new ResponseEntity<BasicResponse>(res,HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/certidetails/{rollNo}")
@@ -35,16 +39,22 @@ public class StudentCertificationController {
 	}
 	
 	@PutMapping("/certidetails/{rollNo}")
-	public ResponseEntity<?> updatetDetails( @PathVariable String rollNo,
+	public ResponseEntity<BasicResponse> updatetDetails( @PathVariable String rollNo,
 											 @RequestBody StudentCertification cetification) throws Exception{
 		certi.updateCertiDetail(cetification, rollNo);
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		BasicResponse res = new BasicResponse();
+		res.setMessage("Success");
+		res.setStatus("201");
+		return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/certidetails/{certiId}")
-	public ResponseEntity<?> deleteDetails(@PathVariable("certiId") long certiId){
+	public ResponseEntity<BasicResponse> deleteDetails(@PathVariable("certiId") long certiId){
 			certi.deleteDetails(certiId);
-		return new ResponseEntity<>(HttpStatus.OK);
+			BasicResponse res = new BasicResponse();
+			res.setMessage("Success");
+			res.setStatus("201");
+		return new ResponseEntity<>(res,HttpStatus.OK);
 		
 	}
 	

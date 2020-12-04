@@ -14,7 +14,7 @@ import com.ymcatpo.app.topapp.model.Password;
 import com.ymcatpo.app.topapp.service.user.UserService;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/ymca/api")
 @CrossOrigin
 public class PasswordController {
 	
@@ -29,10 +29,10 @@ public class PasswordController {
 		
 	}
 	
-	@RequestMapping(value = "/reset/password/student/{email}", method = RequestMethod.POST)
-	public BasicResponse resetPasswordStudent(@PathVariable String email) {
+	@RequestMapping(value = "/reset/password/student/{username}", method = RequestMethod.POST)
+	public BasicResponse resetPasswordStudent(@PathVariable String username) {
 		
-		BasicResponse response = userService.resetPasswordStudent(email);
+		BasicResponse response = userService.resetPasswordStudent(username);
 		return response;
 		
 	}
