@@ -20,6 +20,7 @@ import com.ymcatpo.app.topapp.Excel.ExcelHelper;
 import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
+import com.ymcatpo.app.topapp.model.BasicResponse;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
 
 
@@ -53,12 +54,14 @@ public class CompanyController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	} 
 	// student applying for the company
-	@PutMapping("/addStudent")
-	public ResponseEntity<?> updateCompannyStudent(@RequestParam (name = "studentId") String studentId,
+	@PostMapping("/addStudent")
+	public ResponseEntity<BasicResponse> updateCompannyStudent(@RequestParam (name = "studentId") String studentId,
 													@RequestParam (name = "companyId") long companyId)throws Exception{
 			companyService.AppliedCompany(studentId, companyId);
-			
-		return new ResponseEntity<>(HttpStatus.OK);
+			BasicResponse res = new BasicResponse();
+			res.setMessage("Success");
+			res.setStatus("200");
+		return new ResponseEntity<>(new BasicResponse(),HttpStatus.OK);
 	}
 	// list the student applied for a particular company
 	@GetMapping("/getStudent/{companyId}")

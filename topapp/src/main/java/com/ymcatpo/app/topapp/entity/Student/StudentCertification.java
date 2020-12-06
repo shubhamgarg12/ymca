@@ -18,8 +18,7 @@ public class StudentCertification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long certificateId; 
 	private String orgiDetails; 
-	private String certiTitle; 
-	
+	private String certiTitle; 	
 	private String issueDate;
 	
 	@JsonIgnore
