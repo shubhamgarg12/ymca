@@ -6,9 +6,9 @@ public class BasicResponse {
 	
 	String status;
 
-	public String getMessage() {
+    public String getMessage() {
 		return message;
-	}
+		}
 
 	public void setMessage(String message) {
 		this.message = message;
@@ -21,7 +21,4 @@ public class BasicResponse {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
-
 }

@@ -180,7 +180,7 @@ public class UserImplService implements UserService {
 			checkUser.setEmail(user.getEmail());
 			checkUser.setName(user.getName());
 			checkUser.setDepartment(user.getDepartment());
-			checkUser.setPhoneNumber(user.getDepartment());
+			checkUser.setPhoneNumber(user.getPhoneNumber());
 			checkUser.setUsername(username);
 			checkUser.setId(checkUser.getId());
 			User userSaved = userRepo.save(checkUser);
