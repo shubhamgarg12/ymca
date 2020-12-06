@@ -30,7 +30,7 @@ public class StudentEducationalDetailsController {
 	}
 	
 	// for getting a particular record
-	@GetMapping("/studentdetails/{rollNo}/Education")
+	@GetMapping("/studentdetails/education/{rollNo}")
 	public ResponseEntity<StudentEducationalDetails> getStudent(@PathVariable String rollNo) throws Exception {
 		StudentEducationalDetails edu=	education.getStudent(rollNo);
 		return new ResponseEntity<StudentEducationalDetails>(edu, HttpStatus.OK);

@@ -77,10 +77,20 @@ public class CompanyController {
 	}
 
 	@GetMapping("/download/{companyId}")
-	 public ResponseEntity<?> excelCustomersReport(@RequestParam String tpoId,@PathVariable  long companyId) throws IOException, MessagingException {
+	 public ResponseEntity<BasicResponse> excelCustomersReport(@RequestParam String tpoId,@PathVariable  long companyId) throws IOException, MessagingException {
         List<ExcelPojo> customers= companyService.load(companyId);
         ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(customers);    
         companyService.mailCompSender(companyId,in,tpoId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        BasicResponse res = new BasicResponse();
+		res.setMessage("Success");
+		res.setStatus("200");
+        return new ResponseEntity<BasicResponse>(res,HttpStatus.OK);
 	}
+	@GetMapping("/getCompanyList")
+	public ResponseEntity<?> getListCompany()
+	{
+		return new ResponseEntity<>(companyService.getCompanyList(), HttpStatus.OK);
+		
+	}
+
 }

@@ -27,16 +27,16 @@ import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
 import com.ymcatpo.app.topapp.entity.user.User;
 import com.ymcatpo.app.topapp.exception.ApiException;
+import com.ymcatpo.app.topapp.model.CompanyModel;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
 import com.ymcatpo.app.topapp.userDao.UserRepository;
 
-
 @Service
-public class CompanyServiceImpl implements CompanyService  {
+public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private CompanyDao companyDao;
-	@Autowired 
+	@Autowired
 	private StudentPersonalDetailsDao studentDao;
 	@Autowired
 	private StudentEduccationalDetailsDao studentEduDao;
@@ -46,26 +46,27 @@ public class CompanyServiceImpl implements CompanyService  {
 	private MailerService mailService;
 	@Autowired
 	UserRepository userRepo;
+
 	@Override
 	public Company CreateNew(Company cmp) {
-		try { 
-		Company company=companyDao.save(cmp);
-		 	return companyDao.getOne(company.getCompanyId());
-		}catch(Exception e) {
+		try {
+			Company company = companyDao.save(cmp);
+			return companyDao.getOne(company.getCompanyId());
+		} catch (Exception e) {
 			throw new ApiException("Error  while creating company", HttpStatus.CONFLICT);
 		}
-		 	
+
 	}
 
 	@Override
 	public void AppliedCompany(String stuId, Long companyId) throws MailException, InterruptedException {
-			Optional<StudentPersonalDetails> stu=	studentDao.findById(stuId);
-		Optional<Company>	comp =companyDao.findById(companyId);
-		
-		if(! comp.isPresent()){
+		Optional<StudentPersonalDetails> stu = studentDao.findById(stuId);
+		Optional<Company> comp = companyDao.findById(companyId);
+
+		if (!comp.isPresent()) {
 			throw new ApiException("Company does not exist", HttpStatus.NO_CONTENT);
-		} 
-		if(! stu.isPresent()) {
+		}
+		if (!stu.isPresent()) {
 			throw new ApiException("RollNo does not exist", HttpStatus.NO_CONTENT);
 		}
 		Set<StudentPersonalDetails> temp = comp.get().getStudent();
@@ -81,54 +82,52 @@ public class CompanyServiceImpl implements CompanyService  {
 
 	@Override
 	public List<Company> CompanyList() {
-		List<Company> list =	companyDao.findAll();
-			if(list.isEmpty()) {
-				throw  new ApiException("Company List is empty", HttpStatus.NO_CONTENT);
-			}
+		List<Company> list = companyDao.findAll();
+		if (list.isEmpty()) {
+			throw new ApiException("Company List is empty", HttpStatus.NO_CONTENT);
+		}
 		return list;
 	}
 
 	@Override
 	public Company View(Long companyId) {
-		Optional<Company> company= 	companyDao.findById(companyId);
-		if(!company.isPresent()) {
-			throw  new ApiException("Wrong Company Id", HttpStatus.NO_CONTENT);
+		Optional<Company> company = companyDao.findById(companyId);
+		if (!company.isPresent()) {
+			throw new ApiException("Wrong Company Id", HttpStatus.NO_CONTENT);
 		}
 		return company.get();
 	}
 
 	@Override
 	public Set<StudentPersonalDetails> getPersonalDetails(long companyId) {
-		 Company  cmp= companyDao.findById(companyId).orElseThrow( () -> new ApiException("No company exist for given Id",
-																					HttpStatus.NO_CONTENT) );
-		 Set<StudentPersonalDetails> list= cmp.getStudent();
-		if(list.isEmpty()) {
-			new ApiException("No Student have registered yet",
-					HttpStatus.NO_CONTENT);
+		Company cmp = companyDao.findById(companyId)
+				.orElseThrow(() -> new ApiException("No company exist for given Id", HttpStatus.NO_CONTENT));
+		Set<StudentPersonalDetails> list = cmp.getStudent();
+		if (list.isEmpty()) {
+			new ApiException("No Student have registered yet", HttpStatus.NO_CONTENT);
 		}
-		
+
 		return list;
 	}
 
 	@Override
 	public Set<Company> getCompanyList(String studentId) {
-		
-	StudentPersonalDetails stu=	studentDao.findById(studentId).orElseThrow( () -> new ApiException("Student RollNo doesnt exist",
-				HttpStatus.NO_CONTENT) );
-	Set<Company> list = stu.getCompany_id();
-		if(list.isEmpty()) {
-			new ApiException("student havent apply in any company yet",
-					HttpStatus.NO_CONTENT);
+
+		StudentPersonalDetails stu = studentDao.findById(studentId)
+				.orElseThrow(() -> new ApiException("Student RollNo doesnt exist", HttpStatus.NO_CONTENT));
+		Set<Company> list = stu.getCompany_id();
+		if (list.isEmpty()) {
+			new ApiException("student havent apply in any company yet", HttpStatus.NO_CONTENT);
 		}
 		return list;
 	}
 
 	@Override
 	public List<ExcelPojo> load(long companyId) {
-		
-		Set<StudentPersonalDetails> list= getPersonalDetails(companyId);
+
+		Set<StudentPersonalDetails> list = getPersonalDetails(companyId);
 		List<ExcelPojo> tutorials = new ArrayList<ExcelPojo>();
-		for(StudentPersonalDetails student :list) {
+		for (StudentPersonalDetails student : list) {
 			ExcelPojo excel = new ExcelPojo();
 			excel.setStudentRollNo(student.getRollNo());
 			excel.setStudentFullName(student.getFullName());
@@ -157,42 +156,53 @@ public class CompanyServiceImpl implements CompanyService  {
 			excel.setStudentEducationYear(education.getGapYear());
 			excel.setStudentEducationGapReason(education.getGapReason());
 			List<StudentCertification> certi = studentCertiDao.findByStu(student);
-			if(certi.isEmpty()) {
+			if (certi.isEmpty()) {
 				excel.setStudentcertificationId(null);
 				excel.setStudentcertificationOrgiDetails(null);
 				excel.setStudentcertificationTitle(null);
 				excel.setStudentcertificationIssueDate(null);
-				
-			}else {
+
+			} else {
 				StringJoiner sb1 = new StringJoiner(", ");
 				StringJoiner sb2 = new StringJoiner(", ");
 				StringJoiner sb3 = new StringJoiner(", ");
 				StringJoiner sb4 = new StringJoiner(", ");
-				
-			for(StudentCertification certifica :certi) {
-				sb1.add((CharSequence) (String.valueOf(certifica.getCertificateId())));
-				sb2.add((CharSequence) (certifica.getOrgiDetails()));
-				sb3.add((CharSequence) (certifica.getCertiTitle() ));
-				sb4.add((CharSequence) (certifica.getIssueDate()));
-			}
-			excel.setStudentcertificationId(sb1.toString());
-			excel.setStudentcertificationOrgiDetails(sb2.toString());
-			excel.setStudentcertificationTitle(sb3.toString());
-			excel.setStudentcertificationIssueDate(sb4.toString());
-			
+
+				for (StudentCertification certifica : certi) {
+					sb1.add((CharSequence) (String.valueOf(certifica.getCertificateId())));
+					sb2.add((CharSequence) (certifica.getOrgiDetails()));
+					sb3.add((CharSequence) (certifica.getCertiTitle()));
+					sb4.add((CharSequence) (certifica.getIssueDate()));
+				}
+				excel.setStudentcertificationId(sb1.toString());
+				excel.setStudentcertificationOrgiDetails(sb2.toString());
+				excel.setStudentcertificationTitle(sb3.toString());
+				excel.setStudentcertificationIssueDate(sb4.toString());
+
 			}
 			tutorials.add(excel);
 		}
-		
-	    return tutorials;
-		
+
+		return tutorials;
+
 	}
 
 	@Override
-	public boolean mailCompSender(long companyId, ByteArrayInputStream in, String tpoId) throws IOException, MessagingException {
+	public boolean mailCompSender(long companyId, ByteArrayInputStream in, String tpoId)
+			throws IOException, MessagingException {
 		User user = userRepo.getUserByUsername(tpoId);
 		mailService.sendattachment(Long.toString(companyId), in, user.getEmail());
 		return false;
 	}
-	
+
+	@Override
+	public List<CompanyModel> getCompanyList() {
+		List<CompanyModel> companyPojo = new ArrayList<CompanyModel>();
+		List<Company> cTemp = companyDao.findAll();
+
+		for (Company company : cTemp) {
+			companyPojo.add(new CompanyModel(company, company.getStudent().size()));
+		}
+		return companyPojo;
+	}
 }
