@@ -99,7 +99,15 @@ public class UserImplService implements UserService {
 		} else {
 			throw new ApiException("User already exist", HttpStatus.NOT_ACCEPTABLE);
 		}
-
+		try {
+			mailService.sendNotificaitoin(user.getEmail(), 0, user.getUsername());
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 		return response;
 
 	}
@@ -128,7 +136,15 @@ public class UserImplService implements UserService {
 		} else {
 			throw new ApiException("User already exist", HttpStatus.NOT_ACCEPTABLE);
 		}
-
+		try {
+			mailService.sendNotificaitoin(user.getEmail(), 3, user.getUsername());
+		} catch (MailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return response;
 	}
 
@@ -143,6 +159,15 @@ public class UserImplService implements UserService {
 			userRepo.save(user);
 			response.setMessage("Success");
 			response.setStatus(HttpStatus.CREATED.toString());
+			try {
+				mailService.sendNotificaitoin(user.getEmail(), 2,"");
+			} catch (MailException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			throw new ApiException("Invalid Password", HttpStatus.BAD_REQUEST);
 		}
@@ -156,11 +181,12 @@ public class UserImplService implements UserService {
 		if (user != null) {
 			String password = RandomStringUtils.random(10, true, true);
 			try {
-				mailService.sendNotificaitoin(user.getEmail(), 1, password);
+				
 				user.setPassword(bCryptPasswordEncoder.encode(password));
 				userRepo.save(user);
 				response.setMessage("Success");
 				response.setStatus(HttpStatus.CREATED.toString());
+				mailService.sendNotificaitoin(user.getEmail(), 1, password);
 			} catch (MailException e) {
 				throw new ApiException("Mail Error", HttpStatus.BAD_REQUEST);
 			} catch (InterruptedException e) {
@@ -168,7 +194,6 @@ public class UserImplService implements UserService {
 			}
 		} else {
 			throw new ApiException("No user found", HttpStatus.BAD_REQUEST);
-
 		}
 		return response;
 	}
@@ -185,7 +210,6 @@ public class UserImplService implements UserService {
 			checkUser.setId(checkUser.getId());
 			User userSaved = userRepo.save(checkUser);
 			if (userSaved != null) {
-
 				response.setMessage("Success");
 				response.setStatus(HttpStatus.CREATED.toString());
 			} else {

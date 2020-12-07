@@ -17,8 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-	private MailerService notificationService;
+    	
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
@@ -27,15 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Could not find user");
         }
-        try {
-			notificationService.sendNotificaitoin(user.getEmail(), 0, user.getUsername()+", your data is updated");
-		} catch (MailException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+       
+			//notificationService.sendNotificaitoin(user.getEmail(), 0, user.getUsername()+", your data is updated");
+		
         return new MyUserDetails(user);
     }
  
