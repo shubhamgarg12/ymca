@@ -53,7 +53,7 @@ public class MailerService {
 	}
 	
 	static String getBody() {
-		return "Dear Student,\r\n \r\n You have successfully changed your password.\r\n \r\n Best Regards\r\n P.A.Y. (Placement Application of J.C .Bose UST YMCA)	";
+		return "Dear User,\r\n \r\n You have successfully changed your password.\r\n \r\n Best Regards\r\n P.A.Y. (Placement Application of J.C .Bose UST YMCA)	";
 	}
 	
 	static String getBody(String comapnyName, int no) {
