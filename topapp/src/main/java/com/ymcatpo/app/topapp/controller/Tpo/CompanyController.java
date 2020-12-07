@@ -57,11 +57,8 @@ public class CompanyController {
 	@PostMapping("/addStudent")
 	public ResponseEntity<BasicResponse> updateCompannyStudent(@RequestParam (name = "studentId") String studentId,
 													@RequestParam (name = "companyId") long companyId)throws Exception{
-			companyService.AppliedCompany(studentId, companyId);
-			BasicResponse res = new BasicResponse();
-			res.setMessage("Success");
-			res.setStatus("200");
-		return new ResponseEntity<>(new BasicResponse(),HttpStatus.OK);
+		BasicResponse res = companyService.AppliedCompany(studentId, companyId);		
+		return new ResponseEntity<>(res,HttpStatus.OK);
 	}
 	// list the student applied for a particular company
 	@GetMapping("/getStudent/{companyId}")

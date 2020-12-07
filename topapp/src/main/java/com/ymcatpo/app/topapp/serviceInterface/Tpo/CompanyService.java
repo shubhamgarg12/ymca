@@ -13,11 +13,12 @@ import org.springframework.mail.MailException;
 import com.ymcatpo.app.topapp.Excel.ExcelPojo;
 import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
+import com.ymcatpo.app.topapp.model.BasicResponse;
 import com.ymcatpo.app.topapp.model.CompanyModel;
 
 public interface CompanyService {
 	 Company CreateNew(Company cmp);
-	 void AppliedCompany(String stuId, Long companyId) throws MailException, InterruptedException;
+	 BasicResponse AppliedCompany(String stuId, Long companyId) throws MailException, InterruptedException;
 	 List<Company> CompanyList();
 	 List<CompanyModel> getCompanyList();
 	 Company View(Long companyId);

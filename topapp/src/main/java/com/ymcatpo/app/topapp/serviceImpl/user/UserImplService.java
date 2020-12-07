@@ -63,11 +63,13 @@ public class UserImplService implements UserService {
 		}
 		MyUserDetails userDetails = (MyUserDetails) jwtInMemoryUserDetailsService
 				.loadUserByUsername(user.getUsername());
+		User us = userRepo.getUserByUsername(user.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		AuthenticateResponse response = new AuthenticateResponse();
 		response.setToken(token);
 		response.setUsername(userDetails.getUsername());
+		response.setEmail(us.getEmail());
 		userDetails.getAuthorities().forEach(s -> {
 
 			response.setRole(s.toString());

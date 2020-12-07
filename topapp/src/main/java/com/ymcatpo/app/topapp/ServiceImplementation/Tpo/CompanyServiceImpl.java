@@ -27,6 +27,7 @@ import com.ymcatpo.app.topapp.entity.Student.StudentPersonalDetails;
 import com.ymcatpo.app.topapp.entity.Tpo.Company;
 import com.ymcatpo.app.topapp.entity.user.User;
 import com.ymcatpo.app.topapp.exception.ApiException;
+import com.ymcatpo.app.topapp.model.BasicResponse;
 import com.ymcatpo.app.topapp.model.CompanyModel;
 import com.ymcatpo.app.topapp.serviceInterface.Tpo.CompanyService;
 import com.ymcatpo.app.topapp.userDao.UserRepository;
@@ -59,15 +60,18 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public void AppliedCompany(String stuId, Long companyId) throws MailException, InterruptedException {
+	public BasicResponse AppliedCompany(String stuId, Long companyId) throws MailException, InterruptedException {
 		Optional<StudentPersonalDetails> stu = studentDao.findById(stuId);
 		Optional<Company> comp = companyDao.findById(companyId);
-
+		BasicResponse basic  = new BasicResponse();
 		if (!comp.isPresent()) {
+			
 			throw new ApiException("Company does not exist", HttpStatus.NO_CONTENT);
 		}
 		if (!stu.isPresent()) {
-			throw new ApiException("RollNo does not exist", HttpStatus.NO_CONTENT);
+			basic.setMessage("Please update your Student Details");
+			basic.setStatus(HttpStatus.NO_CONTENT.toString());
+			throw new ApiException("Please update your Student Details", HttpStatus.NO_CONTENT);
 		}
 		Set<StudentPersonalDetails> temp = comp.get().getStudent();
 		temp.add(stu.get());
@@ -77,7 +81,11 @@ public class CompanyServiceImpl implements CompanyService {
 		stu.get().setCompany_id(temp2);
 		companyDao.save(comp.get());
 		studentDao.save(stu.get());
+		basic.setMessage("Success");
+		basic.setStatus(HttpStatus.FOUND.toString());
+		
 		mailService.sendNotificaitoin(stu.get().getEmail(), 4, comp.get().getCompanyName());
+		return basic;
 	}
 
 	@Override
