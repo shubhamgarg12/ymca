@@ -49,10 +49,16 @@ public class CompanyServiceImpl implements CompanyService {
 	UserRepository userRepo;
 
 	@Override
-	public Company CreateNew(Company cmp) {
+	public BasicResponse CreateNew(Company cmp) {
+		BasicResponse res = new BasicResponse();
 		try {
+			
 			Company company = companyDao.save(cmp);
-			return companyDao.getOne(company.getCompanyId());
+			res.setMessage("Success");
+			res.setStatus("200");
+			return res;
+			
+			
 		} catch (Exception e) {
 			throw new ApiException("Error  while creating company", HttpStatus.CONFLICT);
 		}

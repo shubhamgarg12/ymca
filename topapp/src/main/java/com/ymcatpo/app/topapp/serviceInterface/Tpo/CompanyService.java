@@ -17,7 +17,7 @@ import com.ymcatpo.app.topapp.model.BasicResponse;
 import com.ymcatpo.app.topapp.model.CompanyModel;
 
 public interface CompanyService {
-	 Company CreateNew(Company cmp);
+	 BasicResponse CreateNew(Company cmp);
 	 BasicResponse AppliedCompany(String stuId, Long companyId) throws MailException, InterruptedException;
 	 List<Company> CompanyList();
 	 List<CompanyModel> getCompanyList();

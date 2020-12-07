@@ -40,7 +40,9 @@ public class MailerService {
 		case 3:
 			subject= "Congrats to become a TPO member of P.A.Y.";
 		break;
-		
+		case 4:
+			subject= "APPLICATION CONFIRMATION";
+		break;
 		}
 				
 		return subject;
@@ -128,7 +130,7 @@ public class MailerService {
 	            helper = new MimeMessageHelper(message, true);
 	            helper.setFrom("payxyztpo@gmail.com");
 	            helper.setTo(email);
-	            helper.setSubject("Test");
+	            helper.setSubject("Exported File of"+ fileName);
 	            
 	            
 

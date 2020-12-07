@@ -47,11 +47,11 @@ public class CompanyController {
 	
 	// create company
 	@PostMapping("/createCompany")
-	public ResponseEntity<?> createEntity(@RequestBody Company cmp) throws Exception{
+	public ResponseEntity<BasicResponse> createEntity(@RequestBody Company cmp) throws Exception{
 			
-		companyService.CreateNew(cmp);
+		BasicResponse res = companyService.CreateNew(cmp);
 			
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(res,HttpStatus.CREATED);
 	} 
 	// student applying for the company
 	@PostMapping("/addStudent")
